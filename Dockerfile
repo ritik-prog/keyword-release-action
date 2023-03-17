@@ -3,11 +3,13 @@ FROM alpine
 RUN apk add --no-cache \
         bash           \
         httpie         \
-        jq &&          \
+        jq             \
+        curl &&        \
         which bash &&  \
         which http &&  \
-        which jq   &&  \
-        curl -L "https://github.com/cli/cli/releases/download/v2.5.1/gh_2.5.1_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin --strip-components=1 gh_2.5.1_linux_amd64/bin/gh \
+        which jq &&    \
+        which curl &&  \
+        curl -L "https://github.com/cli/cli/releases/download/v2.5.1/gh_2.5.1_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin --strip-components=1 gh_2.5.1_linux_amd64/bin/gh && \
         which gh
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
