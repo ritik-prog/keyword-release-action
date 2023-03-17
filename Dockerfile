@@ -4,7 +4,7 @@ RUN apk add --no-cache \
         bash           \
         httpie         \
         jq             \
-        curl &&        \
+        curl           \
         which bash &&  \
         which http &&  \
         which jq &&    \
