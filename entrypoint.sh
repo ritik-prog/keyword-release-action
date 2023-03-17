@@ -34,6 +34,7 @@ then
     then
         echo "## [TESTING] Keyword was found but no release was created."
     else
+        git config --global --add safe.directory /github/workspace
         gh release create $VERSION -F - <<< "$DATA"
     fi
 # otherwise
