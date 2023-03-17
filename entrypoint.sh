@@ -30,7 +30,7 @@ then
 
     URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/"
 
-    AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
+    AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
     ACCEPT_HEADER="Accept: application/vnd.github+json"
     API_VERSION_HEADER="X-GitHub-Api-Version: 2022-11-28"
 
