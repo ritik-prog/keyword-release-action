@@ -1,22 +1,17 @@
-FROM debian:latest
+FROM alpine/git:v2.26.2
 
-# Install dependencies
-RUN apt-get update && \
-        apt-get install -y \
+RUN apk update && \
+        apk add --no-cache \
         bash \
         httpie \
         jq \
-        gnupg \
-        lsb-release \
-        curl
+        which bash && \
+        which http && \
+        which jq
 
-# Install gh CLI
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 && \
-        echo "deb https://cli.github.com/packages $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/github-cli.list && \
-        apt-get update && \
-        apt-get install gh
+RUN wget https://github.com/cli/cli/releases/download/v1.0.0/gh_1.0.0_linux_386.tar.gz -O ghcli.tar.gz
+RUN tar --strip-components=1 -xf ghcli.tar.gz
 
-# Copy entrypoint script and sample push event
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY sample_push_event.json /sample_push_event.json
 
