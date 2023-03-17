@@ -22,19 +22,23 @@ then
     # do something
     VERSION=$(date +%F.%s)
 
-    DATA="$(printf '{"tag_name":"v%s",' $VERSION)"
-    DATA="${DATA} $(printf '"target_commitish":"master",')"
-    DATA="${DATA} $(printf '"name":"v%s",' $VERSION)"
-    DATA="${DATA} $(printf '"body":"Automated release based on keyword: %s",' "$*")"
-    DATA="${DATA} $(printf '"draft":false, "prerelease":false}')"
+    DATA="--header 'Accept: application/vnd.github+json' \
+          --header 'X-GitHub-Api-Version: 2022-11-28' \
+          --input -"
 
-    URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases"
+    JSON="$(printf '{"tag_name":"v%s",' $VERSION)"
+    JSON="${JSON} $(printf '"target_commitish":"master",')"
+    JSON="${JSON} $(printf '"name":"v%s",' $VERSION)"
+    JSON="${JSON} $(printf '"body":"Automated release based on keyword: %s",' "$*")"
+    JSON="${JSON} $(printf '"draft":false, "prerelease":false}')"
+
+    URL="/repos/${GITHUB_REPOSITORY}/releases"
 
     if [[ "${LOCAL_TEST}" == *"true"* ]];
     then
         echo "## [TESTING] Keyword was found but no release was created."
     else
-        http POST $URL "Authorization: Bearer $GITHUB_TOKEN" <<< "$DATA" | jq .
+        echo $JSON | gh api $URL $DATA
     fi
 # otherwise
 else
