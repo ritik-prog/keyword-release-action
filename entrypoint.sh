@@ -28,22 +28,11 @@ then
     DATA="${DATA} $(printf '"body":"Automated release based on keyword: %s",' "$*")"
     DATA="${DATA} $(printf '"draft":false, "prerelease":false}')"
 
-    RELEASE_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/"
-
-    AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
-    ACCEPT_HEADER="Accept: application/vnd.github+json"
-    API_VERSION_HEADER="X-GitHub-Api-Version: 2022-11-28"
-
     if [[ "${LOCAL_TEST}" == *"true"* ]];
     then
         echo "## [TESTING] Keyword was found but no release was created."
     else
-        RELEASE_RESPONSE=$(echo $DATA | http POST $RELEASE_URL $AUTH_HEADER $ACCEPT_HEADER $API_VERSION_HEADER --ignore-stdin | jq .)
-        UPLOAD_URL=$(echo $RELEASE_RESPONSE | jq -r .upload_url | sed 's/{?name,label}//')
-
-        # Upload the asset
-        ASSET_URL="${UPLOAD_URL}?name=${RELEASE_FILENAME}"
-        http --check-status --ignore-stdin --form POST $ASSET_URL $AUTH_HEADER $ACCEPT_HEADER $API_VERSION_HEADER < $RELEASE_FILENAME
+        gh release create $VERSION -F - <<< "$DATA"
     fi
 # otherwise
 else
