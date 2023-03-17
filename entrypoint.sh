@@ -28,9 +28,9 @@ then
     DATA="${DATA} $(printf '"body":"Automated release based on keyword: %s",' "$*")"
     DATA="${DATA} $(printf '"draft":false, "prerelease":false}')"
 
-    RELEASE_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/releases"
+    RELEASE_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/"
 
-    AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
+    AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
     ACCEPT_HEADER="Accept: application/vnd.github+json"
     API_VERSION_HEADER="X-GitHub-Api-Version: 2022-11-28"
 
