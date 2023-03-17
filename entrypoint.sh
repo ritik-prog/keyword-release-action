@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+export PATH=$PATH:/ghcli/bin
+
 if [ -n "$GITHUB_EVENT_PATH" ];
 then
     EVENT_PATH=$GITHUB_EVENT_PATH
